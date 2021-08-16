@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float gravity;
     [SerializeField] private float jumpHeight;
+    Vector3 velocity;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,17 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isGrounded = Physics.CheckSphere(transform.position, groundCheckDistance, groundMask);
+
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2.0f;
+            controller.Move(velocity * Time.deltaTime);
+        }
+        else
+        {
+            //velocity.y
+        }
 
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
