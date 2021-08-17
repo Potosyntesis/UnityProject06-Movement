@@ -28,7 +28,7 @@ public class ThirdPersonCamera : MonoBehaviour
         Vector3 cameraPos = new Vector3(0, height, -12);
 
         cameraTransform.position = player.position + camRotation * cameraPos;
-        currentY = Mathf.Clamp(currentY, -20, 75);
+        currentY = Mathf.Clamp(currentY, -40, 75);
 
         Vector3 heightAdjustedPos = player.position;
         heightAdjustedPos.y += 2.5f;

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]Camera cam;
+    [SerializeField] Camera cam;
     CharacterController controller;
 
     [SerializeField] float speed = 1;
     float refSmooth;
-    [SerializeField]float smoothValue = 2;
+    [SerializeField] float smoothValue = 2;
 
     [SerializeField] private bool isGrounded;
     [SerializeField] private float groundCheckDistance;
@@ -29,32 +29,45 @@ public class Player : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(transform.position, groundCheckDistance, groundMask);
 
-        if (isGrounded && velocity.y < 0)
+        if (isGrounded)
         {
-            velocity.y = -2.0f;
-            controller.Move(velocity * Time.deltaTime);
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+            }
+            else
+            {
+                velocity.y = -9.81f;
+            }
+
+
         }
-        else
-        {
-            //velocity.y
-        }
+
+        Debug.Log(velocity.y);
+
 
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
+
         Vector3 direction = new Vector3(horizontal, 0, vertical);
 
-        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
-        float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref refSmooth, smoothValue);
-
-        Vector3 moveDirection = Quaternion.Euler(0, angle, 0) * Vector3.forward;
-
-        transform.rotation = Quaternion.Euler(0, smoothAngle, 0);
-
-        if(direction.magnitude > 0)
+        if (direction.magnitude > 0)
         {
+            float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
+            float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref refSmooth, smoothValue);
+
+            Vector3 moveDirection = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+
+            transform.rotation = Quaternion.Euler(0, smoothAngle, 0);
+
             controller.Move(moveDirection * Time.deltaTime * speed);
+
+
         }
+
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
 
     }
 }
