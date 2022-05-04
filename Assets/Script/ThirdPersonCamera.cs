@@ -11,7 +11,7 @@ public class ThirdPersonCamera : MonoBehaviour
     private Camera cam;
     private float currentX = 0.0f;
     private float currentY = 0.0f;
-    // Start is called before the first frame update
+
     void Start()
     {
         cam = Camera.main;
